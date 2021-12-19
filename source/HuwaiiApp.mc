@@ -227,7 +227,7 @@ class HuwaiiApp extends Application.AppBase {
 				var day_of_weak = date.day_of_week;
 				return Lang.format("$1$ $2$",[days[day_of_weak], date.day.format("%d")]);
 			} else {
-				var date = Date.info(now, Time.FORMAT_LONG);
+				date = Date.info(now, Time.FORMAT_LONG);
 				var day_of_weak = date.day_of_week;
 				return Lang.format("$1$ $2$",[day_of_weak.toUpper(), date.day.format("%d")]);
 			}
@@ -257,7 +257,7 @@ class HuwaiiApp extends Application.AppBase {
 				day = date.day;
 				month = months[date.month];
 			} else {
-				var date = Date.info(now, Time.FORMAT_MEDIUM);
+				date = Date.info(now, Time.FORMAT_MEDIUM);
 				day = date.day;
 				month = months[date.month];
 			}
@@ -267,6 +267,7 @@ class HuwaiiApp extends Application.AppBase {
 				return Lang.format("$1$ $2$",[month, day.format("%d")]);
 			}
 		}
+		return "";
 	}
 	
 	function toKValue(value) {
