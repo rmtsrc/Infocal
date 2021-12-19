@@ -9,6 +9,7 @@ using Toybox.SensorHistory as SensorHistory;
 using Toybox.UserProfile;
 using Toybox.Time;
 using Toybox.Time.Gregorian as Date;
+using Toybox.Weather;
 
 enum /* FIELD_TYPES */ {
 	FIELD_TYPE_HEART_RATE = 0,
@@ -240,61 +241,194 @@ class CTextField extends BaseDataField {
 class WeatherField extends BaseDataField {
 
 	var weather_icon_mapper;
+	var weather_condition_mapper;
 
 	function initialize(id) {
 		BaseDataField.initialize(id);
 		
 		weather_icon_mapper = {
-    		"01d" => "",
-			"02d" => "",
-			"03d" => "",
-			"04d" => "",
-			"09d" => "",
-			"10d" => "",
-			"11d" => "",
-			"13d" => "",
-			"50d" => "",
-			
-			"01n" => "",
-			"02n" => "",
-			"03n" => "",
-			"04n" => "",
-			"09n" => "",
-			"10n" => "",
-			"11n" => "",
-			"13n" => "",
-			"50n" => "",
+			Weather.CONDITION_CLEAR => "",
+			Weather.CONDITION_PARTLY_CLOUDY => "",
+			Weather.CONDITION_MOSTLY_CLOUDY => "",
+			Weather.CONDITION_RAIN => "",
+			Weather.CONDITION_SNOW => "",
+			Weather.CONDITION_WINDY => "",
+			Weather.CONDITION_THUNDERSTORMS => "",
+			Weather.CONDITION_WINTRY_MIX => "",
+			Weather.CONDITION_FOG => "",
+			Weather.CONDITION_HAZY => "",
+			Weather.CONDITION_HAIL => "",
+			Weather.CONDITION_SCATTERED_SHOWERS => "",
+			Weather.CONDITION_SCATTERED_THUNDERSTORMS => "",
+			Weather.CONDITION_UNKNOWN_PRECIPITATION => "",
+			Weather.CONDITION_LIGHT_RAIN => "",
+			Weather.CONDITION_HEAVY_RAIN => "",
+			Weather.CONDITION_LIGHT_SNOW => "",
+			Weather.CONDITION_HEAVY_SNOW => "",
+			Weather.CONDITION_LIGHT_RAIN_SNOW => "",
+			Weather.CONDITION_HEAVY_RAIN_SNOW => "",
+			Weather.CONDITION_CLOUDY => "",
+			Weather.CONDITION_RAIN_SNOW => "",
+			Weather.CONDITION_PARTLY_CLEAR => "",
+			Weather.CONDITION_MOSTLY_CLEAR => "",
+			Weather.CONDITION_LIGHT_SHOWERS => "",
+			Weather.CONDITION_SHOWERS => "",
+			Weather.CONDITION_HEAVY_SHOWERS => "",
+			Weather.CONDITION_CHANCE_OF_SHOWERS => "",
+			Weather.CONDITION_CHANCE_OF_THUNDERSTORMS => "",
+			Weather.CONDITION_MIST => "",
+			Weather.CONDITION_DUST => "",
+			Weather.CONDITION_DRIZZLE => "",
+			Weather.CONDITION_TORNADO => "",
+			Weather.CONDITION_SMOKE => "",
+			Weather.CONDITION_ICE => "",
+			Weather.CONDITION_SAND => "",
+			Weather.CONDITION_SQUALL => "",
+			Weather.CONDITION_SANDSTORM => "",
+			Weather.CONDITION_VOLCANIC_ASH => "",
+			Weather.CONDITION_HAZE => "",
+			Weather.CONDITION_FAIR => "",
+			Weather.CONDITION_HURRICANE => "",
+			Weather.CONDITION_TROPICAL_STORM => "",
+			Weather.CONDITION_CHANCE_OF_SNOW => "",
+			Weather.CONDITION_CHANCE_OF_RAIN_SNOW => "",
+			Weather.CONDITION_CLOUDY_CHANCE_OF_RAIN => "",
+			Weather.CONDITION_CLOUDY_CHANCE_OF_SNOW => "",
+			Weather.CONDITION_CLOUDY_CHANCE_OF_RAIN_SNOW => "",
+			Weather.CONDITION_FLURRIES => "",
+			Weather.CONDITION_FREEZING_RAIN => "",
+			Weather.CONDITION_SLEET => "",
+			Weather.CONDITION_ICE_SNOW => "",
+			Weather.CONDITION_THIN_CLOUDS => "",
+			Weather.CONDITION_UNKNOWN => ""
 		};
+		
+		weather_condition_mapper = {
+			Weather.CONDITION_CLEAR => "Clear",
+			Weather.CONDITION_PARTLY_CLOUDY => "Partly cloudy",
+			Weather.CONDITION_MOSTLY_CLOUDY => "Mostly cloudy",
+			Weather.CONDITION_RAIN => "Rain",
+			Weather.CONDITION_SNOW => "Snow",
+			Weather.CONDITION_WINDY => "Windy",
+			Weather.CONDITION_THUNDERSTORMS => "Thunderstorms",
+			Weather.CONDITION_WINTRY_MIX => "Wintry mix",
+			Weather.CONDITION_FOG => "Fog",
+			Weather.CONDITION_HAZY => "Hazy",
+			Weather.CONDITION_HAIL => "Hail",
+			Weather.CONDITION_SCATTERED_SHOWERS => "Scattered showers",
+			Weather.CONDITION_SCATTERED_THUNDERSTORMS => "Scattered thunderstorms",
+			Weather.CONDITION_UNKNOWN_PRECIPITATION => "Rain",
+			Weather.CONDITION_LIGHT_RAIN => "Light rain",
+			Weather.CONDITION_HEAVY_RAIN => "Heavy rain",
+			Weather.CONDITION_LIGHT_SNOW => "Light snow",
+			Weather.CONDITION_HEAVY_SNOW => "Heavy snow",
+			Weather.CONDITION_LIGHT_RAIN_SNOW => "Light rain snow",
+			Weather.CONDITION_HEAVY_RAIN_SNOW => "Heavy rain snow",
+			Weather.CONDITION_CLOUDY => "Cloudy",
+			Weather.CONDITION_RAIN_SNOW => "Rain snow",
+			Weather.CONDITION_PARTLY_CLEAR => "Partly clear",
+			Weather.CONDITION_MOSTLY_CLEAR => "Mostly clear",
+			Weather.CONDITION_LIGHT_SHOWERS => "Light showers",
+			Weather.CONDITION_SHOWERS => "Showers",
+			Weather.CONDITION_HEAVY_SHOWERS => "Heavy showers",
+			Weather.CONDITION_CHANCE_OF_SHOWERS => "Chance of showers",
+			Weather.CONDITION_CHANCE_OF_THUNDERSTORMS => "Chance of thunderstorms",
+			Weather.CONDITION_MIST => "Mist",
+			Weather.CONDITION_DUST => "Dust",
+			Weather.CONDITION_DRIZZLE => "Drizzle",
+			Weather.CONDITION_TORNADO => "Tornado!",
+			Weather.CONDITION_SMOKE => "Smoke!",
+			Weather.CONDITION_ICE => "Ice",
+			Weather.CONDITION_SAND => "Sand!",
+			Weather.CONDITION_SQUALL => "Squall",
+			Weather.CONDITION_SANDSTORM => "Sandstorm!",
+			Weather.CONDITION_VOLCANIC_ASH => "Volcanic ash!",
+			Weather.CONDITION_HAZE => "Haze",
+			Weather.CONDITION_FAIR => "Fair",
+			Weather.CONDITION_HURRICANE => "Hurricane!",
+			Weather.CONDITION_TROPICAL_STORM => "Tropical storm!",
+			Weather.CONDITION_CHANCE_OF_SNOW => "Chance of snow",
+			Weather.CONDITION_CHANCE_OF_RAIN_SNOW => "Chance of rain snow",
+			Weather.CONDITION_CLOUDY_CHANCE_OF_RAIN => "Cloudy chace of rain",
+			Weather.CONDITION_CLOUDY_CHANCE_OF_SNOW => "Cloudy chance of snow",
+			Weather.CONDITION_CLOUDY_CHANCE_OF_RAIN_SNOW => "Cloudy chance of rain snow",
+			Weather.CONDITION_FLURRIES => "Flurries",
+			Weather.CONDITION_FREEZING_RAIN => "Freezing rain",
+			Weather.CONDITION_SLEET => "Sleet",
+			Weather.CONDITION_ICE_SNOW => "Ice snow",
+			Weather.CONDITION_THIN_CLOUDS => "Thin clouds",
+			Weather.CONDITION_UNKNOWN => "Unknown"
+		};
+
+		// 01d.png 	01n.png 	clear sky  				 => "",
+		// 02d.png 	02n.png 	few clouds				 => "",
+		// 03d.png 	03n.png 	scattered clouds	 => "",
+		// 04d.png 	04n.png 	broken clouds			 => "",
+		// 09d.png 	09n.png 	shower rain				 => "",
+		// 10d.png 	10n.png 	rain							 => "",
+		// 11d.png 	11n.png 	thunderstorm			 => "",
+		// 13d.png 	13n.png 	snow							 => "",
+		// 50d.png 	50n.png 	mist							 => "",
+
+		// weather_icon_mapper = {
+    // 		"01d" => "",
+		// 	"02d" => "",
+		// 	"03d" => "",
+		// 	"04d" => "",
+		// 	"09d" => "",
+		// 	"10d" => "",
+		// 	"11d" => "",
+		// 	"13d" => "",
+		// 	"50d" => "",
+			
+		// 	"01n" => "",
+		// 	"02n" => "",
+		// 	"03n" => "",
+		// 	"04n" => "",
+		// 	"09n" => "",
+		// 	"10n" => "",
+		// 	"11n" => "",
+		// 	"13n" => "",
+		// 	"50n" => "",
+		// };
 	}
 	
 	function cur_icon() {
-		var weather_data = App.getApp().getProperty("OpenWeatherMapCurrent");
-		if (weather_data != null) {
-			return weather_icon_mapper[weather_data["icon"]];
-		}
-		return null;
+		var forcast = new Weather.CurrentConditions();
+		var currentConditions = forcast.getCurrentConditions();
+		return weather_icon_mapper[currentConditions.condition];
+
+		// var weather_data = App.getApp().getProperty("OpenWeatherMapCurrent");
+		// if (weather_data != null) {
+		// 	return weather_icon_mapper[weather_data["icon"]];
+		// }
+		// return null;
 	}
 	
 	function cur_label(value) {
 		// WEATHER
-		var need_minimal = App.getApp().getProperty("minimal_data");
-        var weather_data = App.getApp().getProperty("OpenWeatherMapCurrent");
-        if (weather_data != null) {
-        	var settings = Sys.getDeviceSettings();
-			var temp = weather_data["temp"];
-        	var unit = "°C";
-        	if (settings.temperatureUnits == System.UNIT_STATUTE) {
-				temp = (temp * (9.0 / 5)) + 32; // Convert to Farenheit: ensure floating point division.
-				unit = "°F";
-			}
-			value = temp.format("%d") + unit;
+		var forcast = new Weather.CurrentConditions();
+		var currentConditions = forcast.getCurrentConditions();
+		return weather_condition_mapper[currentConditions.condition] + " " + currentConditions.feelsLikeTemperature + "°C";
+
+		// var need_minimal = App.getApp().getProperty("minimal_data");
+    //     var weather_data = App.getApp().getProperty("OpenWeatherMapCurrent");
+    //     if (weather_data != null) {
+    //     	var settings = Sys.getDeviceSettings();
+		// 	var temp = weather_data["temp"];
+    //     	var unit = "°C";
+    //     	if (settings.temperatureUnits == System.UNIT_STATUTE) {
+		// 		temp = (temp * (9.0 / 5)) + 32; // Convert to Farenheit: ensure floating point division.
+		// 		unit = "°F";
+		// 	}
+		// 	value = temp.format("%d") + unit;
         
-	        var description = weather_data.get("des");
-	        if (description != null) {
-	        	return description + " " +  value;
-	        }
-        }
-        return "--";
+	  //       var description = weather_data.get("des");
+	  //       if (description != null) {
+	  //       	return description + " " +  value;
+	  //       }
+    //     }
+    //     return "--";
 	}
 }
 
@@ -331,30 +465,37 @@ class TemparatureHLField extends BaseDataField {
 	
 	function cur_label(value) {
 		// WEATHER
-		var need_minimal = App.getApp().getProperty("minimal_data");
-        var weather_data = App.getApp().getProperty("OpenWeatherMapCurrent");
-        if (weather_data != null) {
-			var settings = Sys.getDeviceSettings();
-			var temp_min = weather_data["temp_min"];
-			var temp_max = weather_data["temp_max"];
-        	var unit = "°C";
-        	if (settings.temperatureUnits == System.UNIT_STATUTE) {
-				temp_min = (temp_min * (9.0 / 5)) + 32; // Convert to Farenheit: ensure floating point division.
-				temp_max = (temp_max * (9.0 / 5)) + 32; // Convert to Farenheit: ensure floating point division.
-				unit = "°F";
-			}
-			if (need_minimal) {
-				return Lang.format("$1$ $2$",[temp_max.format("%d"), temp_min.format("%d")]);
-			} else {
-				return Lang.format("H $1$ L $2$",[temp_max.format("%d"), temp_min.format("%d")]);
-			}
-        } else {
-        	if (need_minimal) {
-				return "--";
-			} else {
-				return "H - L -";
-			}
-        }
+		var forcast = new Weather.DailyForecast();
+		var dailyForecast = forcast.getDailyForecast();
+		var precipitationChance = dailyForecast[0].precipitationChance;
+		var low = dailyForecast[0].lowTemperature;
+		var high = dailyForecast[0].highTemperature;
+		return Lang.format("H$1$ L$2$ P$3$%", [high.format("%d"), low.format("%d"), precipitationChance.format("%d")]);
+
+		// var need_minimal = App.getApp().getProperty("minimal_data");
+    //     var weather_data = App.getApp().getProperty("OpenWeatherMapCurrent");
+    //     if (weather_data != null) {
+		// 	var settings = Sys.getDeviceSettings();
+		// 	var temp_min = weather_data["temp_min"];
+		// 	var temp_max = weather_data["temp_max"];
+    //     	var unit = "°C";
+    //     	if (settings.temperatureUnits == System.UNIT_STATUTE) {
+		// 		temp_min = (temp_min * (9.0 / 5)) + 32; // Convert to Farenheit: ensure floating point division.
+		// 		temp_max = (temp_max * (9.0 / 5)) + 32; // Convert to Farenheit: ensure floating point division.
+		// 		unit = "°F";
+		// 	}
+		// 	if (need_minimal) {
+		// 		return Lang.format("$1$ $2$",[temp_max.format("%d"), temp_min.format("%d")]);
+		// 	} else {
+		// 		return Lang.format("H $1$ L $2$",[temp_max.format("%d"), temp_min.format("%d")]);
+		// 	}
+    //     } else {
+    //     	if (need_minimal) {
+		// 		return "--";
+		// 	} else {
+		// 		return "H - L -";
+		// 	}
+    //     }
 	}
 }
 
