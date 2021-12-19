@@ -269,6 +269,11 @@ class HuwaiiApp extends Application.AppBase {
 		}
 		return "";
 	}
+
+	function getDayName() {
+		var date = Date.info(Time.now(), Time.FORMAT_SHORT);
+		return days[date.day_of_week];
+	}
 	
 	function toKValue(value) {
 		var valK = value/1000.0;

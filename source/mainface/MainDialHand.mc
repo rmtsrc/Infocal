@@ -198,23 +198,25 @@ class MainDialHand extends Ui.Drawable {
 	    	// draw secondary info
 	    	dc.setColor(gmain_color, Graphics.COLOR_TRANSPARENT);
 	    	var h2 = dc.getFontHeight(midDigitalFont);
-	    	dc.drawText(target_info_x+bonus_alignment, centerY*0.7-h2/4 + 5 + vertical_alignment, midDigitalFont, smallnumber.format(number_formater), alignment);
+	    	dc.drawText(target_info_x+bonus_alignment, centerY*0.7-h2/4 + 5 + vertical_alignment + 10, midDigitalFont, smallnumber.format(number_formater), alignment);
 	    	
 	    	if (centerX==109 && digital_style == 2) {
 	    		return;
 	    	}
 			
 			// draw date str
+			var dayNameText = Application.getApp().getDayName();
 			var dateText = Application.getApp().getFormatedDate();
 			dc.setColor(gmain_color, Graphics.COLOR_TRANSPARENT);
 			var h3 = dc.getFontHeight(smallDigitalFont);
-			dc.drawText(target_info_x-bonus_alignment+extra_info_alignment, centerY*0.4-h3/4 + 7, smallDigitalFont, dateText, alignment);
+			dc.drawText(target_info_x-bonus_alignment+extra_info_alignment, centerY*0.4-h3/4 - 7 + 10, smallDigitalFont, dayNameText, alignment);
+			dc.drawText(target_info_x-bonus_alignment+extra_info_alignment, centerY*0.4-h3/4 + 7 + 10, smallDigitalFont, dateText, alignment);
 			
 			// horizontal line
 			var w3 = dc.getTextWidthInPixels(dateText, smallDigitalFont);
 			dc.setPenWidth(2);     
 			dc.setColor(gsecondary_color, Graphics.COLOR_TRANSPARENT);
-			dc.drawLine(target_info_x-bonus_alignment-w3/2+extra_info_alignment, centerY*0.5 + 7, target_info_x-bonus_alignment+w3/2+extra_info_alignment, centerY*0.5 + 7);
+			dc.drawLine(target_info_x-bonus_alignment-w3/2+extra_info_alignment, centerY*0.5 + 7 + 10, target_info_x-bonus_alignment+w3/2+extra_info_alignment, centerY*0.5 + 7 + 10);
 			
 		} else if (digital_style == 1 || digital_style == 3) {
 			var hourText = hour.format(number_formater);
