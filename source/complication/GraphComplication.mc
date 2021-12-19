@@ -196,12 +196,13 @@ class GraphComplication extends Ui.Drawable {
 						Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER);
 	        	return;
 	        }
-	        var value_label = parse_data_value(targetdatatype, HistoryPresent);
-	        var labelll = value_label.format("%d");
+	        // var value_label = parse_data_value(targetdatatype, HistoryPresent);
+	        // var value_label = parse_data_value(targetdatatype, HistoryMin + " " + HistoryPresent + " " + HistoryMax);
+	        // var labelll = value_label.format("%d");
 			dc.drawText(position_x, 
 						position_y + (position==1?(graph_height/2 + 10):(-graph_height/2-16)), 
 						smallDigitalFont, 
-						labelll, 
+						HistoryMin + " " + HistoryPresent + " " + HistoryMax, 
 						Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER);
 						
 			settings = null;
