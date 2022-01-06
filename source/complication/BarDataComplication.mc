@@ -52,11 +52,10 @@ class BarDataComplication extends BarComplication {
 	function getSettingDataKey() {
 		if (position==0) {
 			// upper
-        	return Application.getApp().getProperty("compbart");
-        } else if (position==1) {
-        	// lower
-        	return Application.getApp().getProperty("compbarb");
-        }
+			return Application.getApp().getProperty("compbart");
+		} // else if (position==1) {
+		// lower
+		return Application.getApp().getProperty("compbarb");
 	}
 
 	function draw(dc) {
