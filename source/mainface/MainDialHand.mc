@@ -112,6 +112,17 @@ class MainDialHand extends Ui.Drawable {
     	}
     	
     	var currentSettings = System.getDeviceSettings();
+			if (currentSettings.doNotDisturb == true) {
+				dc.setColor(gmain_color, Graphics.COLOR_TRANSPARENT);
+				dc.drawText(
+					dc.getWidth() / 2,                      // gets the width of the device and divides by 2
+					0,
+					smallDigitalFont,                    // sets the font size
+					"BAT " + System.getSystemStats().battery.toNumber() + "%",                          // the String to display
+					Graphics.TEXT_JUSTIFY_CENTER            // sets the justification for the text
+				);
+			}
+
     	var clockTime = System.getClockTime();   
     	var hour = clockTime.hour;	
     	if(!(currentSettings.is24Hour)) {
@@ -195,10 +206,13 @@ class MainDialHand extends Ui.Drawable {
 	    	}
 	    	dc.setPenWidth(1);
 	    	
+				var extraX = 4;
+				var extraY = 7;
+
 	    	// draw secondary info
 	    	dc.setColor(gmain_color, Graphics.COLOR_TRANSPARENT);
 	    	var h2 = dc.getFontHeight(midDigitalFont);
-	    	dc.drawText(target_info_x+bonus_alignment, centerY*0.7-h2/4 + 5 + vertical_alignment + 10, midDigitalFont, smallnumber.format(number_formater), alignment);
+	    	dc.drawText(target_info_x+bonus_alignment + extraX, centerY*0.7-h2/4 + 5 + vertical_alignment + extraY, midDigitalFont, smallnumber.format(number_formater), alignment);
 	    	
 	    	if (centerX==109 && digital_style == 2) {
 	    		return;
@@ -209,14 +223,14 @@ class MainDialHand extends Ui.Drawable {
 			var dateText = Application.getApp().getFormatedDate();
 			dc.setColor(gmain_color, Graphics.COLOR_TRANSPARENT);
 			var h3 = dc.getFontHeight(smallDigitalFont);
-			dc.drawText(target_info_x-bonus_alignment+extra_info_alignment, centerY*0.4-h3/4 - 7 + 10, smallDigitalFont, dayNameText, alignment);
-			dc.drawText(target_info_x-bonus_alignment+extra_info_alignment, centerY*0.4-h3/4 + 7 + 10, smallDigitalFont, dateText, alignment);
+			dc.drawText(target_info_x-bonus_alignment+extra_info_alignment + extraX, centerY*0.4-h3/4 - 7 + extraY, smallDigitalFont, dayNameText, alignment);
+			dc.drawText(target_info_x-bonus_alignment+extra_info_alignment + extraX, centerY*0.4-h3/4 + 7 + extraY, smallDigitalFont, dateText, alignment);
 			
 			// horizontal line
 			var w3 = dc.getTextWidthInPixels(dateText, smallDigitalFont);
 			dc.setPenWidth(2);     
 			dc.setColor(gsecondary_color, Graphics.COLOR_TRANSPARENT);
-			dc.drawLine(target_info_x-bonus_alignment-w3/2+extra_info_alignment, centerY*0.5 + 7 + 10, target_info_x-bonus_alignment+w3/2+extra_info_alignment, centerY*0.5 + 7 + 10);
+			dc.drawLine(target_info_x-bonus_alignment-w3/2+extra_info_alignment + extraX, centerY*0.5 + 7 + extraY, target_info_x-bonus_alignment+w3/2+extra_info_alignment + extraX, centerY*0.5 + 7 + extraY);
 			
 		} else if (digital_style == 1 || digital_style == 3) {
 			var hourText = hour.format(number_formater);

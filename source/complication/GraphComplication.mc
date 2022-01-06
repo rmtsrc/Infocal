@@ -203,7 +203,7 @@ class GraphComplication extends Ui.Drawable {
 			dc.drawText(position_x, 
 						position_y + (position==1?(graph_height/2 + 10):(-graph_height/2-16)), 
 						smallDigitalFont, 
-						HistoryMin + " " + HistoryPresent + " " + HistoryMax, 
+						HistoryMin + "-" + HistoryPresent + "+" + HistoryMax, 
 						Graphics.TEXT_JUSTIFY_CENTER|Graphics.TEXT_JUSTIFY_VCENTER);
 						
 			settings = null;

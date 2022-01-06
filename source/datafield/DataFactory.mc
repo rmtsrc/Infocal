@@ -9,7 +9,6 @@ using Toybox.SensorHistory as SensorHistory;
 using Toybox.UserProfile;
 using Toybox.Time;
 using Toybox.Time.Gregorian as Date;
-using Toybox.Weather;
 
 enum /* FIELD_TYPES */ {
 	FIELD_TYPE_HEART_RATE = 0,
@@ -394,9 +393,12 @@ class WeatherField extends BaseDataField {
 	}
 	
 	function cur_icon() {
-		var forcast = new Weather.CurrentConditions();
-		var currentConditions = forcast.getCurrentConditions();
-		return weather_icon_mapper[currentConditions.condition];
+		var currentConditions = Application.getApp().getProperty("WeatherCurrentConditions");
+		if (currentConditions != null) {
+			return weather_icon_mapper[currentConditions["condition"]];
+		} else {
+			return null;
+		}
 
 		// var weather_data = App.getApp().getProperty("OpenWeatherMapCurrent");
 		// if (weather_data != null) {
@@ -407,9 +409,12 @@ class WeatherField extends BaseDataField {
 	
 	function cur_label(value) {
 		// WEATHER
-		var forcast = new Weather.CurrentConditions();
-		var currentConditions = forcast.getCurrentConditions();
-		return weather_condition_mapper[currentConditions.condition] + " " + currentConditions.feelsLikeTemperature + "°C";
+		var currentConditions = Application.getApp().getProperty("WeatherCurrentConditions");
+		if (currentConditions != null) {
+			return weather_condition_mapper[currentConditions["condition"]] + " " + currentConditions["temperature"] + "°C";
+		} else {
+			return "--";
+		}
 
 		// var need_minimal = App.getApp().getProperty("minimal_data");
     //     var weather_data = App.getApp().getProperty("OpenWeatherMapCurrent");
@@ -465,12 +470,12 @@ class TemparatureHLField extends BaseDataField {
 	
 	function cur_label(value) {
 		// WEATHER
-		var forcast = new Weather.DailyForecast();
-		var dailyForecast = forcast.getDailyForecast();
-		var precipitationChance = dailyForecast[0].precipitationChance;
-		var low = dailyForecast[0].lowTemperature;
-		var high = dailyForecast[0].highTemperature;
-		return Lang.format("H$1$ L$2$ P$3$%", [high.format("%d"), low.format("%d"), precipitationChance.format("%d")]);
+		var dailyForecast = Application.getApp().getProperty("WeatherDailyForecast");
+		if (dailyForecast) {
+			return Lang.format("H$1$ L$2$ P$3$%", [dailyForecast["high"].format("%d"), dailyForecast["low"].format("%d"), dailyForecast["precipitationChance"].format("%d")]);
+		} else {
+			return "H - L - P -";
+		}
 
 		// var need_minimal = App.getApp().getProperty("minimal_data");
     //     var weather_data = App.getApp().getProperty("OpenWeatherMapCurrent");
