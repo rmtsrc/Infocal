@@ -314,8 +314,8 @@ class WeatherField extends BaseDataField {
 			Weather.CONDITION_FOG => "Fog",
 			Weather.CONDITION_HAZY => "Hazy",
 			Weather.CONDITION_HAIL => "Hail",
-			Weather.CONDITION_SCATTERED_SHOWERS => "Scattered showers",
-			Weather.CONDITION_SCATTERED_THUNDERSTORMS => "Scattered thunderstorms",
+			Weather.CONDITION_SCATTERED_SHOWERS => "Part showers",
+			Weather.CONDITION_SCATTERED_THUNDERSTORMS => "Part thunderstorms",
 			Weather.CONDITION_UNKNOWN_PRECIPITATION => "Rain",
 			Weather.CONDITION_LIGHT_RAIN => "Light rain",
 			Weather.CONDITION_HEAVY_RAIN => "Heavy rain",
@@ -330,8 +330,8 @@ class WeatherField extends BaseDataField {
 			Weather.CONDITION_LIGHT_SHOWERS => "Light showers",
 			Weather.CONDITION_SHOWERS => "Showers",
 			Weather.CONDITION_HEAVY_SHOWERS => "Heavy showers",
-			Weather.CONDITION_CHANCE_OF_SHOWERS => "Chance of showers",
-			Weather.CONDITION_CHANCE_OF_THUNDERSTORMS => "Chance of thunderstorms",
+			Weather.CONDITION_CHANCE_OF_SHOWERS => "Chance showers",
+			Weather.CONDITION_CHANCE_OF_THUNDERSTORMS => "Chance thunderstorms",
 			Weather.CONDITION_MIST => "Mist",
 			Weather.CONDITION_DUST => "Dust",
 			Weather.CONDITION_DRIZZLE => "Drizzle",
@@ -346,11 +346,11 @@ class WeatherField extends BaseDataField {
 			Weather.CONDITION_FAIR => "Fair",
 			Weather.CONDITION_HURRICANE => "Hurricane",
 			Weather.CONDITION_TROPICAL_STORM => "Tropical storm",
-			Weather.CONDITION_CHANCE_OF_SNOW => "Chance of snow",
-			Weather.CONDITION_CHANCE_OF_RAIN_SNOW => "Chance of rain snow",
-			Weather.CONDITION_CLOUDY_CHANCE_OF_RAIN => "Cloudy chace of rain",
-			Weather.CONDITION_CLOUDY_CHANCE_OF_SNOW => "Cloudy chance of snow",
-			Weather.CONDITION_CLOUDY_CHANCE_OF_RAIN_SNOW => "Cloudy chance of rain snow",
+			Weather.CONDITION_CHANCE_OF_SNOW => "Chance snow",
+			Weather.CONDITION_CHANCE_OF_RAIN_SNOW => "Chance rain snow",
+			Weather.CONDITION_CLOUDY_CHANCE_OF_RAIN => "Cloudy chance rain",
+			Weather.CONDITION_CLOUDY_CHANCE_OF_SNOW => "Cloudy chance snow",
+			Weather.CONDITION_CLOUDY_CHANCE_OF_RAIN_SNOW => "Cloudy chance rain snow",
 			Weather.CONDITION_FLURRIES => "Flurries",
 			Weather.CONDITION_FREEZING_RAIN => "Freezing rain",
 			Weather.CONDITION_SLEET => "Sleet",
@@ -410,8 +410,12 @@ class WeatherField extends BaseDataField {
 	function cur_label(value) {
 		// WEATHER
 		var currentConditions = Application.getApp().getProperty("WeatherCurrentConditions");
-		if (currentConditions != null) {
+		if (currentConditions["condition"] != null && currentConditions["temperature"] != null) {
 			return weather_condition_mapper[currentConditions["condition"]] + " " + currentConditions["temperature"] + "°C";
+		} else if (currentConditions["condition"] != null) {
+			return weather_condition_mapper[currentConditions["condition"]];
+		} else if (currentConditions["temperature"] != null) {
+			return currentConditions["temperature"] + "°C";
 		} else {
 			return "--";
 		}
